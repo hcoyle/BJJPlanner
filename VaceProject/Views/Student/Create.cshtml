@@ -1,0 +1,46 @@
+﻿@model VaceProject.Models.Student
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<div id="addStudentForm" class="padding-top-20" title="Add Student">
+    <form role="form" id="student-form" name="addStudentFrm">
+        <div class="col-sm-6">
+            <div class="form-group padding-bottom-20">
+                <label class="col-md-3" for="fnameLbl">Forename</label>
+                <input class="form-control col-md-9" id="fname" placeholder="Enter forename">
+            </div>
+            <br />
+            <div class="form-group padding-bottom-20">
+                <label class="col-md-3" for="snameLbl">Surname</label>
+                <input class="form-control col-md-9" id="sname" placeholder="Enter surname">
+
+            </div>
+            <br />
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group padding-bottom-20">
+                <label class="col-md-3" for="emailLbl">Email</label>
+                <input type="email" class="form-control col-md-9" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+
+            </div>
+            <br />
+            <div class="form-group padding-bottom-20">
+                <label class="col-md-3" for="dobLbl">Date of birth</label>
+                <input type="date" class="form-control col-md-9" id="dob" />
+            </div>
+            <div class="col-md-6 pull-right">
+                <button type="submit" id="submit-btn" class="btn btn-primary">Submit</button>
+                <label id="cancel" class="hidden">Cancel</label>
+            </div>
+        </div>
+
+        @Html.AntiForgeryToken()
+    </form>
+
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

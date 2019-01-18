@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - VACE Education</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/toastr.min.js?v=1"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link href="~/Content/toastr.min.css?v=1" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="container">
+        <nav id="navbar" class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <a class="navbar-brand" href="#"> @Html.ActionLink("VACE EDU", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarColor01">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">About Thu-Hoai</a>
+                        </li>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Manage enrolees</a>
+                            </li>
+                        }
+
+                    </ul>
+                    <div id="loginPartial">
+                        @Html.Partial("_LoginPartial")
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+
+        </div>
+        <footer>
+            <p>&copy; @DateTime.Now.Year - VACE Education</p>
+        </footer>
+
+    </div>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+<script>
+ 
+
+    $(function () {
+        $("#btnShowLogin").click(function () {
+            debugger;
+            if (($('#RegisterModal').hasClass('in')))
+                $('#RegisterModal').modal('hide');
+
+            $('#LoginModal').modal('show');
+        });
+
+        $('#btnShowRegister').click(function () {
+            debugger;
+            if (($('#LoginModal').hasClass('in')))
+                $('#LoginModal').modal('hide');
+
+            $('#RegisterModal').modal('show');
+        })
+    })
+
+    $(document).keydown(function (event) {
+        if (event.keyCode == 27) {
+            $('#LoginModal').modal('hide');
+        }
+    });
+
+
+    //Validates form fields against empty 
+    function IsModelValidated(formData) {
+        var errorMessage = '';
+        for (var [key, value] of formData.entries()) {
+            switch (key) {
+               
+                case "ForeName":
+                    if (value == '')
+                        errorMessage += '<li>Please enter forename.</li>';
+                    break;
+                case "LastName":
+                    if (value == '')
+                        errorMessage += '<li>Please enter surname.</li>';
+                    break;
+                case "Email":
+                    if (value == '' || !isValidEmail(value))
+                        errorMessage += '<li>Please enter a valid email address.</li>';
+                    break;
+                case "DOB":
+                    if (value == '')
+                        errorMessage += '<li>Please select a valid date of birth.</li>';
+                    break;
+                default:
+            }
+        }
+
+        if (errorMessage !== '') {
+            toastr.error(errorMessage);
+            return false;
+        }
+        else
+            return true;
+    }
+
+    function isValidEmail(email) {
+        var pattern = /^\b[A-Z0-9._%-]+@@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i
+
+        if (!pattern.test(email))
+            return false
+
+        return true;
+    };
+</script>

@@ -1,0 +1,119 @@
+﻿@using VaceProject.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+}
+
+<script>
+    //form submit event
+    $(document).ready(function () {
+        $('#showRegisterModal').click(function () {
+            $('#btnShowRegister').click();
+        });
+
+        $('#login-form').submit(function (e) {
+            e.preventDefault();
+
+            // Create formData object with antiforgeryToken
+            var formData = new FormData($('#login-form')[0]);
+            //validate empty fields
+            var isValid = IsModelValidated(formData);
+
+            if (isValid) {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("Login","Account")",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        if (data == "Success") { //toastr popup 
+                            toastr.success("Welcome to your VACE portal!");
+                            $('#LoginModal').modal('hide');
+
+                            // reload loginPartial to show logged in username without refresh
+                            $.get('@Url.Action("RefreshLoginPartial", "Account")', function (result) {
+                                $('#loginPartial').html(result);
+                            });
+                        }
+                        else if (data == "Failure")
+                            toastr.error("Login failed. Check your credentials and try again.");
+                        else if (data == "Locked out")
+                            toastr.info("Login failed because this account is locked out. Please contact an admin for help.");
+                    },
+                    error: function (xhr, status) {
+                        toastr.error("Something went wrong.");
+
+                    }
+
+                });
+            }
+        })
+    })
+
+</script>
+
+<div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content col-10 col-md-10 col-sm-10">
+            <form class="form-horizontal" method="post" id="login-form" role="form">
+                @Html.AntiForgeryToken()
+                <div class="modal-header">
+                    <h5 class="modal-title">Login using your VACE Edu account details or click <a href="#">here</a> to register your interest in a personalised communication program.</h5>
+                </div>
+
+                <div class="modal-body">
+                    <div class="fieldlist">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+
+                            <div class="col-md-10">
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="margin-left-33">
+                                <div class="checkbox">
+                                    @Html.CheckBoxFor(m => m.RememberMe)
+                                    @Html.LabelFor(m => m.RememberMe)
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-10 pull-left">
+                            <label>Alternatively click <a id="showRegisterModal">here</a> to register your interest in the VACE Professional Communication program.</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group pull-right padding-10">
+
+                        <input type="submit" value="Log in" class="btn btn-default" />
+                        <input type="button" value="Cancel" data-dismiss="modal" class="btn btn-info cancel-btn" />
+
+                    </div>
+                </div>
+                @* Enable this once you have account confirmation enabled for password reset functionality
+                <p>
+                    @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                </p>*@
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

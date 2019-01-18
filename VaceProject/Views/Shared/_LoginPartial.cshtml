@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNet.Identity
+
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+
+        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li class="nav-item">
+            <a class="btn btn-green" data-toggle="modal" data-target="#RegisterModal" href="#" id="btnShowRegister">
+                Sign Up
+                <i class="fa fa-user-plus"></i>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="btn btn-green" data-toggle="modal" data-target="#LoginModal" href="#" id="btnShowLogin">
+                Log In
+                <i class="fas fa-sign-in-alt"></i>
+            </a>
+        </li>
+    </ul>
+
+    @Html.Partial("~/Views/Account/Login.cshtml", new VaceProject.Models.LoginViewModel())
+    @Html.Partial("~/Views/Account/Register.cshtml", new VaceProject.Models.RegisterViewModel())
+}
+

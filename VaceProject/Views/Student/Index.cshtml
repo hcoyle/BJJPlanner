@@ -1,0 +1,214 @@
+﻿@model IEnumerable<VaceProject.Models.Student>
+
+@{
+    ViewBag.Title = "Index";
+}
+<head>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+            integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+            crossorigin="anonymous"></script>   
+</head>
+
+<style>
+    .bt-btn {
+        margin: 0 auto;
+        text-align: right;
+        width: 50%;
+    }
+
+    label {
+        padding-top:5px;
+    }
+
+
+    .a {
+        font: 2em Arial;
+        text-decoration: none
+    }
+
+</style>
+
+<script>
+
+    $(document).ready(function () {
+        //initialise datatable
+        $('#studentTable').DataTable();
+
+        $('#submit-btn').click(function () {
+            $('#student-form').submit();
+        })
+
+        //form submit event
+        $('#student-form').submit(function (e) {
+            e.preventDefault(); 
+
+            // Create formData object with antiforgeryToken
+            var formData = new FormData($('#student-form')[0]);
+            formData.append('ForeName', $('#fname').val());
+            formData.append('LastName', $('#sname').val());
+            formData.append('Email', $('#email').val());
+            formData.append('DOB', $('#dob').val());
+
+            //validate empty fields
+            var isValid = IsModelValidated(formData);
+
+            if (isValid) {
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("CreateStudent","Student")",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        if (data == "Success") //toastr popup 
+                            toastr.success("Student details saved.");
+                    },
+                    error: function (xhr, status) {
+                        toastr.error("Something went wrong.");
+
+                    }
+
+                });
+            }
+        })
+    });
+
+    //Validates form fields against empty 
+    function IsModelValidated(formData) {
+        var errorMessage = '';
+        for (var [key, value] of formData.entries()) {
+            console.log(key, value);
+
+            switch (key) {
+                case "ForeName":
+                    if (value == '')
+                        errorMessage += '<li>Please enter forename.</li>';
+
+                    break;
+                case "LastName":
+                    if (value == '')
+                        errorMessage += '<li>Please enter surname.</li>';
+                    break;
+                case "Email":
+                    if (value == '')
+                        errorMessage += '<li>Please enter a valid email address.</li>';
+                case "DOB":
+                    if (value == '')
+                        errorMessage += '<li>Please select a valid date of birth.</li>';
+
+                default:
+            }
+        }
+
+        if (errorMessage !== '')
+        {
+            toastr.error(errorMessage);
+            return false;
+        }
+        else
+            return true;
+    }
+
+
+    $(document).ready(function () {
+        debugger;
+
+        //todo - make label clickable
+        $(".slidingDiv").hide();
+
+        $('.show_hide').click(function (e) {
+            $(".slidingDiv").slideToggle("fast");
+            var val = $(this).text() == "-" ? "+" : "-";
+            $(this).hide().text(val).fadeIn("fast");
+            e.preventDefault();
+        });
+    });
+
+</script>
+
+<div class="container-fluid">
+    <div class="row padding-bottom-20">
+        <div>
+            <h2 class="bold-text-14">Student Management</h2>
+            <a href="showHide" class="show_hide" id="plus">+</a>
+            <label id="showHideLbl">Enrol a new student</label>
+            <div class="slidingDiv padding-top-20" title="Add Student">
+                <form role="form" id="student-form" name="addStudentFrm">
+                    <fieldset>
+                        <legend>Enrol a new student</legend>
+                            <div class="col-sm-6">
+                                <div class="form-group padding-bottom-20">
+                                    <label class="col-md-3" for="fnameLbl">Forename</label>
+                                    <input class="form-control col-md-9" id="fname" placeholder="Enter forename">
+                                </div>
+                                <br />
+                                <div class="form-group padding-bottom-20">
+                                    <label class="col-md-3" for="snameLbl">Surname</label>
+                                    <input class="form-control col-md-9" id="sname" placeholder="Enter surname">
+
+                                </div>
+                                <br />
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group padding-bottom-20">
+                                    <label class="col-md-3" for="emailLbl">Email</label>
+                                    <input type="email" class="form-control col-md-9" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+
+                                </div>
+                                <br />
+                                <div class="form-group padding-bottom-20">
+                                    <label class="col-md-3" for="dobLbl">Date of birth</label>
+                                    <input type="date" class="form-control col-md-9" id="dob" />
+                                </div>
+                                <div class="form-group bt-btn padding-top-20">
+                                    <button type="submit" id="submit-btn" class="btn-primary btn">Submit</button>
+                                </div>
+                            </div>
+                    </fieldset>
+                    @Html.AntiForgeryToken()
+
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div>
+            <h2 class="bold-text-14">Existing students</h2>
+            <div>
+                <table id="studentTable" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Enrollment Date</th>
+                            <th>Actions</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ForeName) @Html.DisplayFor(modelItem => item.LastName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EnrollmentDate)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
