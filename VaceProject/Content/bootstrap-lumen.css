@@ -44,12 +44,132 @@
 }
 
 
+.centre-contents{
+    margin-left: auto;
+    margin-right:auto;
+}
+
+.separator-type, .title-type, .intro-type, .content-type .intro-type p {
+    position: relative;
+}
+
+.intro-type .container {
+    padding: 107px 0px 102px 0px !important;
+}
+
+.company-heading h1{
+    margin-bottom: 60px;
+    padding-bottom: 10px;
+    line-height: 80px;
+    color: #fff;
+    font-weight: 700 !important;
+    text-align: center;
+}
+
+.company-heading h3 {
+    line-height: 80px;
+    color: #fff;
+    font-weight: 100 !important;
+    font-size: 25px;
+    margin-bottom: 20px;
+    text-align:center;
+}
+
+.jumbo {
+    margin-top: 50px;
+}
+
+.padding-top-50{
+    padding-top:50px;
+}
+
+.seo-header, .product-header,
+.intro-type .container h1.white,
+.company-heading h1 {
+    font-weight: 100 !important;
+    text-transform: capitalize;
+    font-size: 55px;
+    margin-bottom: 20px;
+    margin-top:100px;
+}
+
+.home-image {
+    height: 600px !important;
+    border-radius: .3rem;
+}
+
+.rounded-image{
+    border-radius: .3rem !important;
+}
+
+.parallax {
+    background-attachment: inherit !important;
+}
+
+.parallax {
+    background-attachment: inherit !important;
+}
+
+.parallax {
+    background-attachment: inherit !important;
+    background-image: url(https://res.cloudinary.com/hcoyle545/image/upload/v1540458070/VACE-welcome-picture-copy-min.jpg);
+    background-size: cover;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    width: 100%;
+    z-index: -10;
+    border-radius: .3rem;
+}
+
+.banner-image {
+    /*padding: 25px 0;*/
+    background-color: aliceblue;
+    z-index: -1;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.darken {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+}
+
+
+.footer-references {
+    padding: 25px 0;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+    box-shadow: 0 0 0px 0px black;
+}
+
+.ct-btn-scroll {
+    width: 49px;
+    height: 49px;
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    padding-top: 500px;
+    z-index: 9;
+    border-radius: 50%;
+    -webkit-transition: background-color 0.25s ease-in-out;
+    transition: background-color 0.25s ease-in-out;
+}
+
+img,
+figure {
+    max-width: 100%;
+}
+
 .rightAlign {
     float: right;
+    width: 45%;
 }
 
 .leftAlign {
     float: left;
+    width: 45%;
 }
 
 *,

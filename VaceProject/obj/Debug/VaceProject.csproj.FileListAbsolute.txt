@@ -119,3 +119,4 @@ C:\Users\coyle\source\repos\VaceProject\VaceProject\obj\Debug\VaceProject.csproj
 C:\Users\coyle\source\repos\VaceProject\VaceProject\obj\Debug\VaceProject.csproj.CopyComplete
 C:\Users\coyle\source\repos\VaceProject\VaceProject\obj\Debug\VaceProject.dll
 C:\Users\coyle\source\repos\VaceProject\VaceProject\obj\Debug\VaceProject.pdb
+C:\Users\coyle\source\repos\VaceProject\VaceProject\obj\Debug\VaceProject.csprojAssemblyReference.cache
